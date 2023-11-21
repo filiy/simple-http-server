@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: app2
+  name: httpd-pod
+  labels:
+    app.kubernetes.io/name: httpd-pod
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: httpd-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: httpd-pod
+    spec:
+      containers:
+        - name: container
+          image: registry-quay-quay.apps.c7vdg.dynamic.opentlc.com/app2/httpd:1.1
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
